@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eligibility Checker</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+        }
+        .container {
+            text-align: center;
+            background: #ffffff;
+            padding: 20px 40px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        label {
+            font-size: 1.2rem;
+            color: #555;
+        }
+        input {
+            font-size: 1.5rem;
+            margin: 10px 0;
+            padding: 10px;
+            width: 100%;
+            max-width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            font-size: 1.2rem;
+            margin: 10px;
+            padding: 10px 20px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: #444;
+            background: #f9f9f9;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            text-align: left;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            white-space: pre-wrap;
+        }
+    </style>
+    <script>
+        async function checkEligibility(type) {
+            const studentID = document.getElementById("student_id").value;
+            const url = `http://localhost:8080/${type}?student_id=${studentID}`;
+            try {
+                const response = await fetch(url);
+                const result = await response.json();
+                document.getElementById("result").innerText = JSON.stringify(result, null, 2);
+            } catch (error) {
+                document.getElementById("result").innerText = "Error: Unable to fetch data.";
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Eligibility Checker</h1>
+        <label for="student_id">Enter Student ID:</label>
+        <input type="number" id="student_id" placeholder="Enter ID" required />
+        <div>
+            <button onclick="checkEligibility('scholarship')">Check Scholarship</button>
+            <button onclick="checkEligibility('exam_permission')">Check Exam Permission</button>
+        </div>
+        <pre id="result"></pre>
+    </div>
+</body>
+</html>
